@@ -1,0 +1,4 @@
+name = LinkedIn Integration
+description = Provides integration with LinkedIn using module hybridauth.
+core = 7.x
+dependencies[] = hybridauth
