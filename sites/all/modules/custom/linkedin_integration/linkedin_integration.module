@@ -1,6 +1,18 @@
 <?php
 
 /**
+ * Implements hook_permission().
+ */
+function linkedin_integration_permission() {
+   return array(
+    'access linkedin data' => array(
+      'title' => t('Access LinkedIn data'), 
+      'description' => t('Allow users to view LinkedIn data.'),
+    ),
+  );
+}
+
+/**
  * Implements hook_menu().
  */
 function linkedin_integration_menu() {
@@ -10,6 +22,7 @@ function linkedin_integration_menu() {
     'title' => 'LinkedIn Integration Testing',
     'description' => 'This is a page for testing intergration with LinkedIn',
     'page callback' => '_linkedin_integration_testing',
+    'access arguments' => array('access linkedin data'),
   );
 
   return $items;
@@ -21,5 +34,24 @@ function linkedin_integration_menu() {
  * Test function to try out the LinkedIn API using the hybridauth module.
  */
 function _linkedin_integration_testing() {
+//   LinkedIn
+  $content = '';
+  // Get the HybridAuth object or exception code. 
+  // No need to put this inside a try-catch block since the function hybridauth_get_instance() does this.
+  $hybridauth = hybridauth_get_instance();
+  try {
+    $linkedin = $hybridauth->authenticate("LinkedIn");
+    
+    // Test 1: fetching user profile
+    $user_profile = ($linkedin->getUserProfile());
+  } catch (Exception $e) {
+    drupal_set_message("Ooophs, we got an error: " . $e->getMessage());
+  }
   
+  // Test 1: using the fetched user profile
+  dpm($user_profile);
+  $user_image_url = $user_profile->photoURL;
+  $content .= theme('image', array('path' => $user_image_url));
+  
+  return $content;
 }
