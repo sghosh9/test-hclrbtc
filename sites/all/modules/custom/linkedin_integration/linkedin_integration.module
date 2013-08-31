@@ -42,16 +42,49 @@ function _linkedin_integration_testing() {
   try {
     $linkedin = $hybridauth->authenticate("LinkedIn");
     
-    // Test 1: fetching user profile
-    $user_profile = ($linkedin->getUserProfile());
+//     // Test 1: fetching user profile : working
+// //     $user_profile = ($linkedin->getUserProfile());
+//     $user_profile = $linkedin->api()->profile('~:(id,picture-url,date-of-birth,num-connections)');
+    
+//     // Test 2: fetching user connections : working
+// //     $user_connections = $linkedin->api()->profile('~/connections:(id,first-name,last-name,picture-url,public-profile-url,summary)');
+//     $user_connections = $linkedin->getUserContacts();
+
+//     // Test 3: post a status update : working
+//     // when giving a title, an url is must for update to be 'shared'.
+//     // title, comment, link, image link
+//     $linkedin->setUserStatus(array('this is a test','this is a test','http://proarta.ch/'));
+
+//     // Test 4: send a message : working
+//     // Testing link : working, but not like a linkedin share on updates page, just the link
+//     // Testing with html : not working
+//     // using Mavo's identifier for testing : 23XX9Bx_G- ; also sending to self
+//     $message_body = '<div>' . t('This is a test message. To check if HTML being renedered correctly.') . '</div>';
+//     $message = $linkedin->api()->message(array('23XX9Bx_G-'), 'This is a test', $message_body . 'http://proarta.ch/', TRUE);
+    
   } catch (Exception $e) {
     drupal_set_message("Ooophs, we got an error: " . $e->getMessage());
   }
   
-  // Test 1: using the fetched user profile
-  dpm($user_profile);
-  $user_image_url = $user_profile->photoURL;
-  $content .= theme('image', array('path' => $user_image_url));
+//   // Test 1: using the fetched user profile
+//   dpm($user_profile);
+//   if(isset($user_profile['success']) && $user_profile['success']) {
+//     $data = @ new SimpleXMLElement($user_profile['linkedin']);
+//     if (!is_object($data)){
+//       drupal_set_message("User profile request failed! " . $linkedin->providerId . " returned an invalid xml data.");
+//     }
+// //     $user_image_url = $user_profile->photoURL;
+//     $user_image_url = (string) $data->{'picture-url'};
+//     $user_connections_count = (string) $data->{'num-connections'};
+//     $content .= theme('image', array('path' => $user_image_url));
+//     $content .= '<div>' . t('No. od connections: ') . $user_connections_count . '</div>';
+//   }
+
+//   // Test 2: using the fetched user conenctions;
+//   dpm($user_connections);
+
+//   // Test 4: get the message sent response
+//   dpm($message);
   
   return $content;
 }
